@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+    {% if category %}
+        {{ category.desciption|truncatewords:188 }}
+    {% else %}
+            welcome to flipkart make ur shopiing enjoyful
+    {% endif %}
+{% endblock %}
+{% block title %}
+{% if category %}
+        {{ category.name }}-flipkart shopping center
+    {% else %}
+    see our new updates lets go on
+    {% endif %}
+{% endblock %}
+{% block content %}
+{% if category %}
+    <div>
+        <div class="row my_row_class">
+            <div class="mx_auto">
+            <p><a href="{% url 'flipkartapp:allprodcat' %}">our prod category</a></p>
+        </div>
+
+    </div>
+{% endif %}
+<div class="mx_auto">
+    {% if category %}
+    <img class="my_image" src="{{category.image.url}}" alt="{{category.name}}" width="400px;">
+</div>
+<br>
+<div>
+    <h1 class="text-center my_title">{{category.name}}</h1>
+    <p class="text-justify">{{category.description}}</p>
+</div>
+{% else %}
+<div>
+<img class="my_image my_image_padding" src="{% static 'img/banner.png' %}" alt="our products">
+    </div>
+<br>
+<div>
+    <h1 class="text-center my_title">our products collection</h1>
+    <p class="text-justify">
+        this is a shopping app regaridnh to inidan based company this is a new indusrty to make our business to take best in the world. this app is creted by salman badharudheen there are so many return policy are available to this and no will take care of this app is return policy is also avaiable to this is our things.....
+    </p>
+</div>
+{% endif %}
+<div class="container">
+    <div class="row mx_auto">
+        {% for product in products.object_list %}
+        <div class="my_bottom_margin col_9 col-sm-12 col-md-4 xol-lg-4">
+            <div class="card text-center" style="min-width:18rem;">
+                <a href="{{product.get_url}}"><img class="card-img-top my-image" src="{{product.image.url}}" alt="{{product.name}}" width="340px;" height="400px;"></a>
+                <div class="card-body">
+                    <h4>{{product.name}}</h4>
+                    <p>{{product.price}}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="mx-auto">
+        {% if products.paginator.num_pages > 1 %}
+        <hr>
+        <div class="text-center">
+            {% for pg in products.paginator.page_range %}
+            <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %} active {% endif %}">{{pg}}</a>
+            {% endfor %}
+
+        </div>
+        {% endif %}
+    </div>
+    <br>
+</div>
+
+
+{% endblock %}
+
